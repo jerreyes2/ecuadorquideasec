@@ -1,0 +1,69 @@
+{% extends 'app/ecom/admin_base.html' %}
+{% load static %}
+{% block content %}
+<br>
+{%include 'app/ecom/admin_dashboard_cards.html'%}
+<br><br><br><br><br>
+
+<hr><hr>
+<div class="container" >
+
+    <div class="panel panel-primary" >
+      <div class="panel-heading" style="text-align:center;">
+        <h6 class="panel-title">Recent Booking</h6>
+      </div>
+      <table class="table table-hover" id="dev-table">
+        <thead>
+          <tr>
+            <th>Num_order</th>
+            <th>Order date</th>
+            <th>Customer Name</th>
+            <th>email</th>
+            <th>Customer Mobile</th>
+            <th>Shipment Address</th>
+            <th>Subtotal</th>
+            <th>Send</th>
+            <th>Total</th>
+            <th>Status</th>
+
+          </tr>
+        </thead>
+        {% for order in orders_ %}
+        <tr>
+
+          <td> {{order.num_order}}</td>
+          <td> {{order.order_date}}</td>
+          {% for c in customer %}
+            {% if order.customer_id == c.id  %}
+              {% for u in user %}
+                  {% if c.user_id == u.id %}
+                  <td> {{u.first_name}} {{u.last_name}} </td>
+                  {%endif%}
+              {% endfor %}
+            {%endif%}
+          {% endfor %}
+
+          <td>{{order.email}}</td>
+          <td>{{order.mobile}}</td>
+          <td>{{order.address}}</td>
+          <td>{{order.subtotal}}</td>
+          <td>{{order.send}}</td>
+          <td>{{order.total}}</td>
+          
+
+          {% if order.status == 'Pending'%}
+          <td> <span class="label label-info">{{order.status}}</span></td>
+          {% elif order.status == 'Delivered' %}
+          <td> <span class="label label-success">{{order.status}}</span></td>
+          {% elif order.status == 'Out for Delivery' %}
+          <td> <span class="label label-warning">{{order.status}}</span></td>
+          {%else%}
+            <td> <span class="label label-primary">{{order.status}}</span></td>
+          {%endif%}
+        </tr>
+        {% endfor %}
+      </table>
+
+  </div>
+</div>
+{% endblock content %}

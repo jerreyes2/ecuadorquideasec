@@ -1,0 +1,211 @@
+{% extends 'app/ecom/customer_base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="card">
+    
+    
+    <form class="row gx-2" action="/customer-address" id="customer_form" method="get">
+      {% csrf_token %}
+      <div class="card-header">
+        <div class="row justify-content-between">
+          <div class="col-md-auto">
+            <h5 class="mb-3 mb-md-0">Shopping Cart</h5>
+          </div>
+          <div class="col-md-auto"><a class="btn btn-sm btn-outline-secondary border-300 me-2" href="/"> 
+            <span class="fas fa-chevron-left me-1" data-fa-transform="shrink-4"></span>Continue Shopping</a><a class="btn btn-sm btn-primary" href="/customer-address">Checkout</a></div>
+        </div>
+        <p class="py-3">
+          The customs limit in your country is 4 kilos per order. Your order should not weigh more than 3.8 kilos per weight tolerance with packaging.
+           The purchase amount (excluding shipping) cannot exceed 400 U$S.
+        </p>
+      </div>
+     
+      <div class="card-body p-0">
+   
+        <div class="row gx-card mx-0 bg-200 text-900 fs--1 fw-semi-bold">
+          <div class="col-9 col-md-8 py-2">Name</div>
+          <div class="col-3 col-md-4">
+            <div class="row">
+              <div class="col-md-8 py-2 d-none d-md-block text-center">Quantity</div>
+              <div class="col-12 col-md-4 text-end py-2">$Price</div>
+            </div>
+          </div>
+        
+        </div>
+        
+      {% for p in products %}
+      {% if p %}
+        <div class="row gx-card mx-0 align-items-center border-bottom border-200">
+          <div class="col-8 py-3">
+            <div class="d-flex align-items-center"><a href=""><img class="img-fluid rounded-1 me-3 d-none d-md-block" src="{% static p.product_image.url %}" alt="" width="60" /></a>
+              <div class="flex-1">
+                <h5 class="fs-0"><a class="text-900" href="">{{p.name}}</a></h5>
+                <div class="fs--2 fs-md--1"><a class="text-danger" href="{% url 'remove-from-cart' p.id  %}">Remove</a></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 py-3">
+            <div class="row align-items-center">
+              <div class="col-md-8 d-flex justify-content-end justify-content-md-center order-1 order-md-0">
+                <div>
+  
+                  <div class="input-group input-group-sm flex-nowrap" data-quantity="data-quantity">
+                    <input type="button"  class="btn btn-sm btn-outline-secondary border-300 px-2" data-type="minus"  value="-">
+                    
+                    <input class="form-control text-center px-2 input-spin-none" name="cantidad" type="number" min="1" value="1" aria-label="Amount (to the nearest dollar)" style="width: 50px" />
+                   
+                    <input  type="button" class="btn btn-sm btn-outline-secondary border-300 px-2" data-type="plus" value="+" >
+                  </div>
+  
+                </div>
+              </div>
+              <input class="col-md-4 text-end ps-0 order-0 order-md-1 mb-2 mb-md-0 text-600 bg-white" name="precio" value={{p.price}} disabled style="border: 0;">
+             
+            </div>
+          </div>
+        </div>
+        {%else%}
+        <br><br><br>
+        <h1>no products</h1>
+        {% endif %}
+        {% endfor %}
+        
+      
+        <div class="row fw-bold gx-card mx-0">
+          <div class="col-9 col-md-8 py-2 text-end text-900"></div>
+          <div class="col px-0">
+           
+            <div class="row gx-card mx-0">
+              <div class="col-md-8 py-2 d-none d-md-block text-center"> Sub-total</div>            
+              <input type="text"  class="col-12 col-md-4 text-end py-2 bg-white" name="subtotal_" id="subtotal" value="${{subtotal}}" style="border: 0;">
+  
+            </div>
+            
+          </div>
+          <div class="col-9 col-md-8 py-2 text-end text-900"></div>
+          <div class="col px-0">
+            <div class="row gx-card mx-0">
+              <div class="col-md-8 py-2 d-none d-md-block text-center">Iva 12%</div>
+              <input  type="text"  class="col-12 col-md-4 text-end py-2" name="iva_" value="$" id="iva" style="border: 0;" >
+            </div>
+            
+          </div>
+          <div class="col-9 col-md-8 py-2 text-end text-900"></div>
+          <div class="col px-0">
+            <div class="row gx-card mx-0">
+              <div class="col-md-8 py-2 d-none d-md-block text-center">Send</div>
+              <input  type="text"  class="col-12 col-md-4 text-end py-2" name="send_" value="25" style="border: 0;" >
+            </div>
+            
+          </div>
+          <div class="col-9 col-md-8 py-2 text-end text-900"></div>
+          <div class="col px-0">
+            <div class="row gx-card mx-0">
+              <div class="col-md-8 py-2 d-none d-md-block text-center" autocomplete="off">Total</div>
+            
+              <input  type="text" class="col-12 col-md-4 text-end py-2 bg-white" name="total_"  id="total" value="$" type="number" style="border: 0;">
+  
+            </div>
+            
+          </div>
+          
+        </div>
+      </div>
+      <div class="card-footer bg-light d-flex justify-content-end">
+       
+      
+        <button type="submit" class="btn btn-sm btn-success" id="btn_purchase" name="purchase">Purchase completed</button>
+      </div>
+    
+    </form>
+
+   
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+
+  <script>
+
+    setInterval('asignar()',1000);
+
+    function cambiar_precio(subtotal, total,iva){
+
+        var i=document.getElementById("subtotal").value = String(subtotal);
+        var i=document.getElementById("total").value = String(total);
+        var i=document.getElementById("iva").value = String(iva);
+       
+    }
+
+
+    var cant = [] ;
+    var cantidad_ = document.getElementsByName("cantidad");
+    var precio_ = document.getElementsByName("precio");
+   
+
+    var subtotal = 0.0
+    var total = 0.0
+   
+
+    function asignar(){
+
+        subtotal = 0.0
+        total = 0.0
+        iva = 0.0
+        cant = [];
+
+        for(i = 0; i < cantidad_.length ; i++){   
+              subtotal +=  cantidad_[i].value * precio_[i].value;        
+              console.log("cant "+ String(cantidad_[i].value) +" * "+precio_[i].value)
+              cant[i] = cantidad_[i].value;
+
+        }
+
+        iva = subtotal * 0.12;     
+        total = (subtotal * 1.12) + 25
+        cambiar_precio(subtotal.toFixed(2), total.toFixed(2), iva.toFixed(2))
+
+  
+        set_cant(cant)
+
+        valor = get_cant();
+
+        for(i = 0; i < valor.length ; i++){
+          console.log("cant ........: "+ valor[i]);
+        }
+        console.log("subtotal "+subtotal);
+       
+      
+    }
+
+    function set_cant(cant){
+      this.cant = cant;
+    }
+
+    function get_cant(){
+      return this.cant;
+    }
+
+   
+    $("#customer_form").submit(function (e) {
+
+    var tasks = get_cant();
+
+        $.ajax({
+            type: 'GET',
+            url: '/customer-address',
+            data: {'tasks[]': tasks},
+        });
+
+
+    });
+
+
+  </script>
+
+  {% endblock content %}
+
+ 

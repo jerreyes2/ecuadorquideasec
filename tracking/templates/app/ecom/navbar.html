@@ -1,0 +1,188 @@
+{% load static %}
+
+  <!-- ===============================================-->
+  <!--   NAV-->
+  <!-- ===============================================-->
+
+  <style>
+.navbar-vertical {
+    position: fixed;
+    display: inline-block;
+    z-index: 0;
+    top: 4.3125rem;
+    width: 100%;
+    max-width: 100vw;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 800px;
+    background-image: none;
+}
+
+
+  </style>
+
+        <nav class="navbar navbar-light navbar-vertical navbar-expand-xl">
+          <script>
+            var navbarStyle = localStorage.getItem("navbarStyle");
+            if (navbarStyle && navbarStyle !== 'transparent') {
+              document.querySelector('.navbar-vertical').classList.add(`navbar-${navbarStyle}`);
+            }
+          </script>
+          
+          <div class="d-flex align-items-center">
+            <div class="toggle-icon-wrapper">
+
+              <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle" data-bs-toggle="tooltip" data-bs-placement="left" title="Toggle Navigation"><span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+
+            </div><a class="navbar-brand" href="/">
+              <div class="d-flex align-items-center py-3">
+                <img class="me-2" src="{% static 'images/logo.png' %}" alt="" width="40" />
+                <span class="font-sans-serif"></span>
+              </div>
+            </a>
+          </div>
+
+          <!--    menu lateral t-->
+          <!-- ===============================================-->
+          <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+
+            <div class="navbar-vertical-content scrollbar " style="height: auto;">
+              <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
+                <li class="nav-item">
+                  <!-- label-->
+                  <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                    <div class="col-auto navbar-vertical-label">Pages
+                    </div>
+                    <div class="col ps-0">
+                      <hr class="mb-0 navbar-vertical-divider" />
+                    </div>
+                  </div>
+                  <!-- parent pages--><a class="nav-link" href="/" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-home"></span></span><span class="nav-link-text ps-1">Home</span>
+                    </div>
+                  </a>
+                  <!-- parent pages--><a class="nav-link" href="#" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-globe"></span></span><span class="nav-link-text ps-1">About us</span>
+                    </div>
+                  </a>
+
+                  
+                  <!-- parent pages-->
+                  <a class="nav-link dropdown-indicator" href="#authentication" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="authentication">
+                    <div class="d-flex align-items-center">
+                      <span class="nav-link-icon">
+                        <span class="fas fa-lock">
+                        </span></span>
+                        <span class="nav-link-text ps-1">Login & Register</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse false" id="authentication">
+                   
+                        <li class="nav-item"><a class="nav-link" href="/customerlogin" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Login</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                      
+                        <li class="nav-item"><a class="nav-link" href="/customersignup" aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Register</span>
+                            </div>
+                          </a>
+                          <!-- more inner pages-->
+                        </li>
+                       
+                        <li class="nav-item"><a class="nav-link" href="/admin-dashboard" aria-expanded="false">
+                          <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Admin</span>
+                          </div>
+                        </a>
+                        <!-- more inner pages-->
+                      </li>
+                     
+                    </li>
+                    
+                  </ul>
+                 
+                 
+       
+                 
+                </li>
+
+                
+                
+
+                <li class="nav-item">
+                  <!-- label-->
+                  
+                  <!-- parent pages--><a class="nav-link" href="/events" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-calendar-alt"></span></span><span class="nav-link-text ps-1">Events</span>
+                    </div>
+                  </a>
+                
+                 
+  
+                  <!-- parent pages--><a class="nav-link" href="/my-order" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-calendar"></span></span><span class="nav-link-text ps-1">Orders</span>
+                    </div>
+                  </a>
+
+                  
+                  <!-- parent pages--><a class="nav-link" href="/tracking" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-location-arrow"></span></span><span class="nav-link-text ps-1">Tracking</span>
+                    </div>
+                  </a>
+                  
+                   <!-- parent pages--><a class="nav-link" href="/cart" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-shopping-cart"></span></span><span class="nav-link-text ps-1">Shopping cart</span>
+                    </div>
+                  </a>
+
+
+                  
+                 
+                  <!-- parent pages--><a class="nav-link dropdown-indicator" href="#social" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="social">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-share-alt"></span></span><span class="nav-link-text ps-1">Contact us</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse false" id="social">
+                    <li class="nav-item"><a class="nav-link" href="https://www.facebook.com/ecuadorquideas" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Facebook</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="https://api.whatsapp.com/send?phone=593999612077&text=Hello%20Sumit.%0d%0aHow%20are%20you%20%3f%0d%0aI%20came%20from%20your%20website.&source=&data=#"  aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">WhatsApp</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="https://twitter.com/AgrocalidadZ7/status/1114940510693744641/photo/1" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Twitter</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.instagram.com/ecuadorquideas/?hl=es" class="fa fa-instagram" aria-expanded="false">
+                        <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Instagram</span>
+                        </div>
+                      </a>
+                      <!-- more inner pages-->
+                    </li>
+                  </ul>
+                </li>
+  
+                  <!-- parent pages--><a class="nav-link" href="pages/landing.html" role="button" aria-expanded="false">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-comment"></span></span><span class="nav-link-text ps-1">Fedback</span>
+                    </div>
+                  </a>
+
+                </ul>
+               
+              </ul>
+             
+            </div>
+          </div>
+        </nav>

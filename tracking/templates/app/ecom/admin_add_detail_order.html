@@ -1,0 +1,128 @@
+{% extends 'app/ecom/admin_base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+  </style>
+</head>
+<!--
+written By : sumit kumar
+facebook : fb.com/sumit.luv
+-->
+<div class="container">
+
+  <div class="card">
+    <div class="card-header">
+      Add Process - Tracking
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Add the following processes in the current state of the order</h5>
+      <p class="card-text">1. We are processing your order at our warehouse in Chilca.</p>
+      <p class="card-text">2. Processing shipment from Jose Joaquin de Olmedo airport.</p>
+      <p class="card-text">3. Traveling to destination contry......</p>
+      <p class="card-text">4. Product arrived and checked at Customs.</p>
+      <p class="card-text">5. Ready to deliver.</p>
+
+      <form action="/add_process_tracking/{{num_order}}" method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+
+        
+          <label for="exampleFormControlInput1" class="form-label">Date process</label>
+          
+          <br>
+
+         
+          <input type="text" id="dp1" class="datepicker"  name="date" readonly><span class="fa fa-calendar"></span>
+          <small id="emailHelp" class="form-text text-muted">Enter the date the process is performed.</small>
+        </div>
+
+        <div class="form-group">
+
+          <label for="exampleFormControlTextarea1" class="form-label">Add process or description</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
+          <small id="iddescription" class="form-text text-muted">Describe the processes or order status description..</small>
+
+        
+        </div>
+      
+
+        <br>
+        <button type="submit" class="btn btn-primary">Save edition</button>
+        
+      
+      </form>
+
+   
+    </div>
+  
+  </div>
+
+  
+ 
+
+  
+  
+  
+
+  
+  <br><br>
+
+ </div>
+  
+  <br><br>
+
+  <script type="text/javascript">
+ 
+ $(document).ready(function(){
+
+$('.datepicker').datepicker({
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    
+});
+
+$('.cell').click(function(){
+    $('.cell').removeClass('select');
+    $(this).addClass('select');
+});
+
+});
+
+
+    </script>
+<!--
+developed By : sumit kumar
+facebook : fb.com/sumit.luv
+youtube : youtube.com/lazycoders
+-->
+{% endblock content %}

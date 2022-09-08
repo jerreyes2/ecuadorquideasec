@@ -1,0 +1,131 @@
+{% extends 'app/ecom/customer_base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="card">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">Payment Method</h5>
+    </div>
+    <div class="card-body">
+
+      <form action="/payment-success" id="form_pay" method="post">
+        {% csrf_token %}
+        
+        
+        
+          <div class="card mb-3">
+            
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                  <div class="form-check mb-0 custom-radio radio-select">
+                    <input class="form-check-input" id="address-1" type="radio" name="clientName" checked="checked" />
+                    <label class="form-check-label mb-0 fw-bold d-block" for="address-1">BANK TRANSFER<span class="radio-select-content">
+                      <img  src="{% static 'images/logos_bancos.png' %}" alt="" width="200" /><br>
+                      <span> Make your payment directly to our bank account.
+                        Please use the order number as payment reference.
+                        Your order will not be processed until the amount has been received in our account.<br/>Pensaukee,<br/>Remember to inform your Account Executive of all orders placed so that you get the best shopping experience.<span class="d-block mb-0 pt-2">Need help? Write us by WhatsApp to the number:
+                          +593 098 405 1826
+
+                      </span>
+                    </span></span></label>
+                  </div>
+                </div>
+
+               
+                
+                </div>
+              </div>
+            </div>
+         
+        
+         
+        
+        </div>
+        
+        </div>
+        
+        
+        <div class="border-dashed-bottom my-5"></div>
+        <div class="row">
+          <div class="col-md-7 col-xl-12 col-xxl-7 px-md-3 mb-xxl-0 position-relative">
+            <div class="d-flex"><img class="me-3" src="../../../static/public/assets/img/icons/shield.png" alt="" width="60" height="60" />
+              <div class="flex-1">
+                <h5 class="mb-2">Buyer Protection</h5>
+                <div class="form-check mb-0">
+                  <input class="form-check-input" id="protection-option-1" type="checkbox" checked="checked" />
+                  <label class="form-check-label mb-0" for="protection-option-1"> <strong>Full Refund </strong>If you don't <br class="d-none d-md-block d-lg-none" />receive your order</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" id="protection-option-2" type="checkbox" checked="checked" />
+                  <label class="form-check-label mb-0" for="protection-option-2"> <strong>Full or Partial Refund, </strong>If the product is not as described in details</label>
+                </div><a class="fs--1 ms-3 ps-2" href="#!">Learn More<span class="fas fa-caret-right ms-1" data-fa-transform="down-2">    </span></a>
+              </div>
+            </div>
+            <div class="vertical-line d-none d-md-block d-xl-none d-xxl-block"> </div>
+          </div>
+          <div class="col-md-5 col-xl-12 col-xxl-5 ps-lg-4 ps-xl-2 ps-xxl-5 text-center text-md-start text-xl-center text-xxl-start">
+            <div class="border-dashed-bottom d-block d-md-none d-xl-block d-xxl-none my-4"></div>
+            <div class="fs-2 fw-semi-bold">All Total: <span class="text-primary">${{total}}</span></div>
+
+            <button type="submit"  class="btn btn-success mt-3 px-5" id="btn" name="purchase">Confirm &amp; Pay</button>
+
+           
+            <p class="fs--1 mt-3 mb-0">By clicking <strong>Confirm & Pay </strong>button you agree to the <a href="#!">Terms &amp; Conditions</a></p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+ <script>
+
+        var pay = ""
+
+        const btn = document.querySelector('#btn');        
+        const radioButtons = document.querySelectorAll('input[name="checked_"]');
+        btn.addEventListener("click", () => {
+            let selectedSize;
+            for (const radioButton of radioButtons) {
+                if (radioButton.checked) {
+                    selectedSize = radioButton.value;
+                    console.log("siiiii "+selectedSize)
+                    set_pay(selectedSize)
+                    break;
+                }
+            }
+            // show the output:
+             
+        });
+
+
+        function set_pay(p){
+          this.pay = p;
+        }
+
+        function get_pay(){
+          return this.pay;
+        }
+    
+
+        $("#form_pay").submit(function (e) {
+
+        var pays = get_pay();
+
+            $.ajax({
+                type: 'POST',
+                url: '/payment-success',
+                data: {'pay': pays},
+            });
+
+        });
+
+    </script>
+
+{% endblock content %}

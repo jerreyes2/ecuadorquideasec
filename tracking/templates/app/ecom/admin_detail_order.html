@@ -1,0 +1,74 @@
+{% extends 'app/ecom/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+  </style>
+</head>
+<!--
+written By : sumit kumar
+facebook : fb.com/sumit.luv
+-->
+<div class="container">
+   
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      
+      <h6 class="panel-title">Detail Orders - Tracking</h6>
+    </div>
+    
+    
+    
+    <table class="table table-hover" id="dev-table">
+      <thead>
+        <tr>
+          <th>Num_order</th>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Update</th>
+          <th>Delete</th>
+
+        </tr>
+      </thead>
+      {% for detail_order in detail_orders %}
+      <tr>
+        <td>{{detail_order.num_order_id}}</td>
+        <td>{{detail_order.date}}</td>
+        <td>{{detail_order.description}}</td>
+      
+        <td><a class="btn btn-primary btn-xs" href="{% url 'update-detail_process' detail_order.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
+        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-detail_process' detail_order.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+      </tr>
+      {% endfor %}
+    </table>
+    
+    
+  
+  </div>
+  <a class="btn btn-primary" href="/add_process_tracking/{{num_order}}">Add process</a>
+  
+  <br><br>
+</div>
+<!--
+developed By : sumit kumar
+facebook : fb.com/sumit.luv
+youtube : youtube.com/lazycoders
+-->
+{% endblock content %}

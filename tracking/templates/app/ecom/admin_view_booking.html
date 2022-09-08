@@ -1,0 +1,91 @@
+{% extends 'app/ecom/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+  </style>
+</head>
+<!--
+written By : sumit kumar
+facebook : fb.com/sumit.luv
+-->
+<div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h6 class="panel-title">Total Orders</h6>
+    </div>
+    <table class="table table-hover" id="dev-table">
+      <thead>
+        <tr>
+          <th>Num_order</th>
+          <th>Order date</th>
+          <th>Customer Name</th>
+          <th>email</th>
+          <th>Customer Mobile</th>
+          <th>Shipment Address</th>
+          <th>Subtotal</th>
+          <th>Send</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Update</th>
+          <th>Delete</th>
+
+        </tr>
+      </thead>
+      {% for order in orders_ %}
+      <tr>
+
+        <td> <a href="detail_order/{{order.num_order}}">{{order.num_order}}</a> </td>
+        <td> {{order.order_date}}</td>
+        {% for c in customer %}
+          {% if order.customer_id == c.id  %}
+            {% for u in user %}
+                {% if c.user_id == u.id %}
+                <td> {{u.first_name}} {{u.last_name}} </td>
+                {%endif%}
+            {% endfor %}
+          {%endif%}
+        {% endfor %}
+
+        <td>{{order.email}}</td>
+        <td>{{order.mobile}}</td>
+        <td>{{order.address}}</td>
+        <td>{{order.subtotal}}</td>
+        <td>{{order.send}}</td>
+        <td>{{order.total}}</td>
+        
+
+        <td>{{order.status}}</td>
+        <td><a class="btn btn-primary btn-xs" href="{% url 'update-order' order.num_order  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
+        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-order' order.num_order  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+      </tr>
+      {% endfor %}
+    </table>
+    
+    
+  
+  </div>
+</div>
+<!--
+developed By : sumit kumar
+facebook : fb.com/sumit.luv
+youtube : youtube.com/lazycoders
+-->
+{% endblock content %}

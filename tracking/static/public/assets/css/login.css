@@ -1,0 +1,15 @@
+/*header section*/
+.hero_area {
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    position: relative;
+    background-image: url(../../../images/hero.png);
+    background-size: cover;
+    background-position: top right;
+  }
