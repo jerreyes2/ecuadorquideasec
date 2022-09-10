@@ -27,7 +27,10 @@ def home_view(request):
         product_count_in_cart=0
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-    return render(request,'app/ecom/index.html',{'products':products,'product_count_in_cart':product_count_in_cart})
+    
+    cant_prod= models.Product.objects.count()
+
+    return render(request,'app/ecom/index.html',{'cant_prod':cant_prod, 'products':products,'product_count_in_cart':product_count_in_cart})
 
 #def home_view(request):
 #    return render(request,'app/ecom/index.html')
@@ -281,20 +284,6 @@ def update_detail_order(request,pk):
     return render(request,'app/ecom/update_order.html',{'orderForm':orderForm})
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # admin view the feedback
 @login_required(login_url='adminlogin')
 def view_feedback_view(request):
@@ -430,8 +419,9 @@ def add_to_cart_view(request,pk):
     else:
         product_count_in_cart=0
     
-    
+    cant_prod = models.Product.objects.count()
     customer = None
+
 
     try:
         customer= models.Customer.objects.get(user_id=request.user.id)
@@ -440,7 +430,7 @@ def add_to_cart_view(request,pk):
 
 
 
-    response = render(request, 'app/ecom/index.html',{'products':products,'customer':customer ,'product_count_in_cart':product_count_in_cart})
+    response = render(request, 'app/ecom/index.html',{'cant_prod':cant_prod,  'products':products,'customer':customer ,'product_count_in_cart':product_count_in_cart})
 
    
 
@@ -610,8 +600,10 @@ def customer_home_view(request):
             
     customer=models.Customer.objects.get(user_id=request.user.id)
     
+    cant_prod= models.Product.objects.count()
 
-    return render(request,'app/ecom/customer_home.html',{'products':products,'product_count_in_cart':product_count_in_cart,'customer':customer})
+
+    return render(request,'app/ecom/customer_home.html',{'cant_prod':cant_prod,'products':products,'product_count_in_cart':product_count_in_cart,'customer':customer})
 
 
 

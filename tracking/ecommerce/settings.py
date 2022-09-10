@@ -76,6 +76,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 
@@ -101,7 +102,7 @@ DATABASES = {
 """
 
 #DATABASES = coneccion.MYSQL_REMOTO
-DATABASES = coneccion.MYSQL_REMOTO
+DATABASES = coneccion.MYSQL_LOCAL
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
