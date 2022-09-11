@@ -55,26 +55,6 @@ class Orders_list(models.Model):
     total =  models.DecimalField(max_digits = 5, decimal_places = 2,null=True)
 
 
-
-class Pay(models.Model):
-    STATUS =(
-        ('Pending','Pending'),
-        ('Py Confirmed','Pay Confirmed')
-       
-    )
-    num_pay = models.CharField(max_length=500,null=True)
-    num_order = models.CharField(max_length=500,null=True)
-    PAY =(
-        ('Credit Card','Credit Card'),
-        ('PayPal','PayPal')
-    )
-    type_pay =  models.CharField(max_length=50,null=True,choices=PAY)
-    total_pay =  models.DecimalField(max_digits = 5, decimal_places = 2,null=True)
-    status=models.CharField(max_length=50,null=True,choices=STATUS)
-
-
-
-
 class Orden(models.Model):
     num_order = models.CharField(max_length=100, primary_key=True)
     customer=models.ForeignKey('Customer', on_delete=models.CASCADE,null=True)
@@ -131,6 +111,28 @@ class Events(models.Model):
     contry = models.CharField(null=True, max_length=100)
     description= models.CharField(max_length=200)
     url = models.CharField(null=True, max_length=200)
+
+
+
+class Pay(models.Model):
+    STATUS =(
+        ('Pending','Pending'),
+        ('Py Confirmed','Pay Confirmed')
+       
+    )
+    num_pay = models.CharField(max_length=500,null=True)
+    num_order = models.CharField(max_length=500,null=True)
+    PAY =(
+        ('Deposit','Deposit'),
+        ('Credit Card','Credit Card'),
+        ('PayPal','PayPal')
+    )
+    type_pay =  models.CharField(max_length=50,null=True,choices=PAY)
+    total_pay =  models.DecimalField(max_digits = 5, decimal_places = 2,null=True)
+    status= models.CharField(max_length=50,null=True,choices=STATUS)
+    num_depos = models.CharField(max_length=500,null=True)
+    deposit_imag = models.ImageField(upload_to='deposits_image/',null=True,blank=True)
+
 
 
 

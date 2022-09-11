@@ -21,13 +21,6 @@ admin.site.register(Feedback, FeedbackAdmin)
 # Register your models here.
 
 
-
-class PayAdim(admin.ModelAdmin):
-     list_display = ("num_pay","num_order","type_pay","status")
-
-admin.site.register(Pay, PayAdim)
-
-
 class OrdenAdmin(admin.ModelAdmin):
     list_display = ("num_order","status","order_date","email","address","mobile","subtotal","send","iva","total","customer_id")
     list_filter = (
@@ -58,7 +51,14 @@ class Events_Admin(admin.ModelAdmin):
 admin.site.register(Events, Events_Admin)
 
 
+class PayAdmin(admin.ModelAdmin):
+    list_display = ("num_pay","num_order","type_pay","total_pay","status","deposit_imag","num_depos")
+    list_filter = (
+        ('num_pay'),
+    )
 
+
+admin.site.register(Pay , PayAdmin )
 
 
 """

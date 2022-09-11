@@ -251,12 +251,22 @@ def delete_order_view(request,pk):
 def update_order_view(request,pk):
     order=models.Orden.objects.get(num_order=pk)
     orderForm=forms.OrderForm(instance=order)
+    pay = models.Pay.objects.get(num_order=pk)
+    
+    status = "Confirmed"
     if request.method=='POST':
         orderForm=forms.OrderForm(request.POST,instance=order)
         if orderForm.is_valid():
+            ord_stat = order.status
+            print("estado...."+str(ord_stat))
+            if ord_stat =="Order Confirmed":
+                print("sssssssssssssssssssssssssssssi")
+                pay = models.Pay.objects.get(num_order=pk)
+                pay.status = "Confirmed"
+                pay.save()
             orderForm.save()
             return redirect('admin-view-booking')
-    return render(request,'app/ecom/update_order.html',{'orderForm':orderForm})
+    return render(request,'app/ecom/update_order.html',{'orderForm':orderForm,"pay":pay , "status":status})
 
 
 
@@ -275,12 +285,15 @@ def delete_detail_order(request,pk):
 @login_required(login_url='adminlogin')
 def update_detail_order(request,pk):
     order=models.Orden.objects.get(num_order=pk)
+   
     orderForm=forms.OrderForm(instance=order)
     if request.method=='POST':
         orderForm=forms.OrderForm(request.POST,instance=order)
         if orderForm.is_valid():
+           
             orderForm.save()
             return redirect('admin-view-booking')
+
     return render(request,'app/ecom/update_order.html',{'orderForm':orderForm})
 
 
@@ -708,7 +721,7 @@ def customer_address_view(request):
             for i in cant_:
                 print("Post "+str(i))
 
-            response = render(request, 'app/ecom/payment.html',{'total':total_, 'customer':customer, 'product_in_cart':product_in_cart})
+            response = render(request, 'app/ecom/payment.html',{'total':total_, 'customer':customer, 'product_in_cart':product_in_cart,'product_count_in_cart':product_count_in_cart})
             response.set_cookie('email',email)
             response.set_cookie('mobile',mobile)
             response.set_cookie('address',address)
@@ -734,6 +747,7 @@ def customer_address_view(request):
 
 # here we are just directing to this view...actually we have to check whther payment is successful or not
 #then only this view should be accessed
+
 @login_required(login_url='customerlogin')
 def payment_success_view(request):
     # Here we will place order | after successful payment
@@ -754,6 +768,7 @@ def payment_success_view(request):
     subtotal = None
     send = None
     total = None
+    
 
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
@@ -761,6 +776,8 @@ def payment_success_view(request):
             product_id_in_cart=product_ids.split('|')
             products=models.Product.objects.all().filter(id__in = product_id_in_cart)
             # Here we get products list that will be ordered by one customer at a time
+
+   
 
 
     # these things can be change so accessing at the time of order...
@@ -781,14 +798,14 @@ def payment_success_view(request):
     
     
 
-    num_order_ = "EC-"+str(models.Orders.objects.count() + 1)
+    num_order_ = "EC-"+str(models.Orden.objects.count() + 1)
     num_pay_ = "PY-"+str(models.Pay.objects.count() + 1)
     
     val = ""
     type_pay_ = ""
 
-    for i in cantidad:
-        print("pay "+str(i))
+    #for i in cantidad:
+    #    print("pay "+str(i))
 
     #subtotal = float(total)
     #send = 25.00
@@ -796,8 +813,10 @@ def payment_success_view(request):
 
     if request.method == 'POST':
         val = request.POST.get('pay')
-        
+        val = "Deposit"
         type_pay_ = val
+        num_depos =  request.POST.get('num_depos')
+        myfile = request.FILES.get('imagen')
 
     # here we are placing number of orders as much there is a products
     # suppose if we have 5 items in cart and we place order....so 5 rows will be created in orders table
@@ -810,20 +829,20 @@ def payment_success_view(request):
     orden = models.Orden.objects.get(num_order = num_order_)
 
     for product, cant in zip (products , cantidad) :
-        models.Orders.objects.get_or_create(customer=customer, num_order = num_order_, product = product,status='Pending',email=email,mobile=mobile,address=address, cant= cant)
+       # models.Orders.objects.get_or_create(customer=customer, num_order = num_order_, product = product,status='Pending',email=email,mobile=mobile,address=address, cant= cant)
         
         models.Orden_list.objects.get_or_create( cant= cant, num_order = orden , product = product )
 
 
-    models.Orders_list.objects.get_or_create( subtotal= subtotal, send=send, total=total, num_order = num_order_ )
-    models.Pay.objects.get_or_create( num_pay = num_pay_, num_order = num_order_, total_pay = total, status='Pending', type_pay = type_pay_ )
+    #models.Orders_list.objects.get_or_create( subtotal= subtotal, send=send, total=total, num_order = num_order_ )
+    models.Pay.objects.get_or_create( num_pay = num_pay_, num_order = num_order_, total_pay = total, status='Pending', type_pay = type_pay_ , deposit_imag = myfile, num_depos = num_depos)
 
     num_order_ = 0
 
   
 
     # after order placed cookies should be deleted
-    response = render(request,'app/ecom/payment_success.html')
+    response = render(request,'app/ecom/payment_success.html',{'customer':customer,'product_count_in_cart': 0})
     response.delete_cookie('product_ids')
     response.delete_cookie('email')
     response.delete_cookie('mobile')

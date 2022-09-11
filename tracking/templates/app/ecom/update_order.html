@@ -1,4 +1,5 @@
 {% extends 'app/ecom/admin_base.html' %}
+{% load static %}
 {% load widget_tweaks %}
 {% block content %}
 
@@ -35,12 +36,17 @@
       cursor: pointer;
       background: #0062cc;
       color: #fff;
-      margin-left:100px;
+    
     }
 
     .menu {
       top: 50px;
     }
+
+    #desplegar{
+        display: none;
+    }
+
   </style>
 
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -51,28 +57,83 @@
 <!------ update page for doctor by admin(sumit)  ---------->
 <form method="post">
   {% csrf_token %}
-  <div class="container register-form">
-    <div class="form">
-      <div class="note">
-        <p>Update Status Of Order</p>
-      </div>
-        <div class="form-content">
 
-              {% render_field orderForm.status class="form-control" placeholder="Address" %}
-              
-          </div>
-
-          </div>
-          <button type="submit" class="btnSubmit">Update</button>
+    <div class="container register-form">
+      <div class="form">
+        <div class="note">
+          <p>Update Status Of Order</p>
         </div>
-       
+          <div class="form-content">
 
+            <h3>Proof uploaded by the customer  </h3>
+          
+            <h6> Order: {{pay.num_order}}</h6>
+            <h6> Customer Pay#: {{pay.num_depos}}</h6>
+            <h6> Type Pay: {{pay.type_pay}}</h6>
+            <h6> Total Pay: {{pay.total_pay}} </h6> 
+            <h6> Status: {{pay.status}} 
+
+                  {% if pay.status == status  %}
+                    <img src="{% static 'images/success.png' %}" alt="" width="25px">
+
+                  {% else %}
+
+                  <img src="{% static 'images/alerta.png' %}" alt="" width="25px">
+                  {%  endif %}
+
+            </h6> 
+           
+            
+           
+            <br>
+            <p>By clicking on "confirmed order", you authorize the start of the delivery process to the end customer.</p>
+            
+            {% render_field orderForm.status name="combo" class="form-control" placeholder="Address" %}
+            
+            <div class="card-body position-relative">
+              <div class="row">
+                <div class="col-lg-8">
+                 
+                  
+                </div>
+              </div>
+            </div>
+
+             <img src="{% static pay.deposit_imag.url %}" width="250px" height="220px" id="imagenmuestra"> 
+
+             <br><br><br>
+            <button type="submit" class="btnSubmit" style="padding-left: 0px;">Update</button>
+            </div>
+
+    
+          
+            </div>
+           
+            
+    
+  
+     </div>
 </form>
 <br><br><br>
+
+
+<script>
+   function mostrar_todo(){
+        document.getElementById('desplegar').style.display = 'block';
+    }
+                    
+    function quitar_todo(){
+        document.getElementById('desplegar').style.display = 'none';
+    }
+</script>
 <!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
+
+
+ <div id="desplegar">
+                  <h5>funcionando</h5>
+            </div>
+
+            onclick="mostrar_todo();
 -->
 
 {% endblock content %}

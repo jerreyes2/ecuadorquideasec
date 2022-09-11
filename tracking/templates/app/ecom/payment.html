@@ -10,11 +10,8 @@
     </div>
     <div class="card-body">
 
-      <form action="/payment-success" id="form_pay" method="post">
-        {% csrf_token %}
-        
-        
-        
+      <form action="/payment-success" id="form_pay" method="post" enctype="multipart/form-data">
+        {% csrf_token %}  
           <div class="card mb-3">
             
             <div class="card-body">
@@ -27,15 +24,41 @@
                       <span> Make your payment directly to our bank account.
                         Please use the order number as payment reference.
                         Your order will not be processed until the amount has been received in our account.<br/>Pensaukee,<br/>Remember to inform your Account Executive of all orders placed so that you get the best shopping experience.<span class="d-block mb-0 pt-2">Need help? Write us by WhatsApp to the number:
-                          +593 098 405 1826
-
+                          <br/>+593 97 868 6450<br/>Account number to make the deposit.<br/>
+                          <br/>Ecuadoquideas<br/>
+                          <br/># 025874455<br/>
+                          Checking account.<br/>
                       </span>
                     </span></span></label>
                   </div>
                 </div>
-
-               
                 
+                <div class="col md-6 mb-3 mb-md-0">
+                  <div class="card-header">
+                    <h5 class="mb-0">Proof of deposit</h5>
+                  </div>
+                  <input class="form-control" type="text" placeholder="#" name="num_depos" aria-label="default input example">
+                  <small id="emailHelp" class="form-text text-muted">Enter the deposit voucher number..</small>
+                  
+
+                  <div class="card-body bg-white">
+                    
+                      <div class="fallback">
+                       <input name="imagen" id="imagen" type="file" placeholder="Select file" maxlength="256" multiple="multiple" />
+                       
+                       <input type="hidden" class="form-control" name="imagenactual" id="imagenactual">
+                       <br><br>
+
+                     
+                       <img src="{% static 'public/assets/img/icons/cloud-upload.svg' %}" width="250px" height="220px" id="imagenmuestra">  
+
+
+                    </div>
+                   
+                   
+                    
+                  </div>
+                </div>
                 </div>
               </div>
             </div>
@@ -83,7 +106,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
  <script>
 
         var pay = ""
@@ -125,6 +148,23 @@
             });
 
         });
+
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function(e) {
+                // Asignamos el atributo src a la tag de imagen
+                $('#imagenmuestra').attr('src', e.target.result);
+              }
+              reader.readAsDataURL(input.files[0]);
+            }
+          }
+
+          // El listener va asignado al input
+          $("#imagen").change(function() {
+            readURL(this);
+          });
 
     </script>
 
