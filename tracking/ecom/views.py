@@ -362,13 +362,22 @@ def tracking_search(request):
     else:
         product_count_in_cart=0
 
-    customer = models.Customer.objects.get(user_id=request.user.id)
-    user = models.User.objects.get(id = request.user.id)
+    customer = None
+    user = None
+
+    try:
+        customer= models.Customer.objects.get(user_id=request.user.id)
+        user = models.User.objects.get(id = request.user.id)
+       
+    except:
+        print("Error....")
+
     num_order_ = request.GET.get('num_order')
     orders = models.Orden.objects.all().filter(num_order = num_order_)
     orden_list = models.Orden_list.objects.all()
     products = models.Product.objects.all()
     detail_order = models.Detail_Orden.objects.all()
+    
     
     #ordered_products = models.Orden_list.objects.all().filter( num_order_id = ordenes)
 
