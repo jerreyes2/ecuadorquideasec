@@ -1,4 +1,4 @@
-{% extends 'ecom/admin_base.html' %}
+{% extends 'app/ecom/admin_base.html' %}
 {% load static %}
 {% block content %}
 
@@ -9,7 +9,7 @@
       margin-left: 25%;
       margin-right: 25%;
       padding: 20px;
-      background-color: #f44336;
+      background-color: #11940f;
       color: white;
     }
 
@@ -49,9 +49,6 @@ facebook : fb.com/sumit.luv
   <strong>{{f.date}} ||By : {{f.name}} </strong><br> {{f.feedback}}
 </div>
 {%endfor%}
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+
+<br><br>
 {% endblock content %}

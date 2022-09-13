@@ -596,13 +596,30 @@ def remove_from_cart_view(request,pk):
 
 
 def send_feedback_view(request):
+
+      #for cart counter
+    if 'product_ids' in request.COOKIES:
+        product_ids = request.COOKIES['product_ids']
+        counter=product_ids.split('|')
+        product_count_in_cart = len(set(counter))
+    else:
+        product_count_in_cart=0
+
+    
+    customer = None
+
+    try:
+        customer= models.Customer.objects.get(user_id=request.user.id)
+    except:
+        print("Error....")
+
     feedbackForm=forms.FeedbackForm()
     if request.method == 'POST':
         feedbackForm = forms.FeedbackForm(request.POST)
         if feedbackForm.is_valid():
             feedbackForm.save()
-            return render(request, 'app/ecom/feedback_sent.html')
-    return render(request, 'app/ecom/send_feedback.html', {'feedbackForm':feedbackForm})
+            return render(request, 'app/ecom/feedback_sent.html',{'customer':customer ,'product_count_in_cart':product_count_in_cart})
+    return render(request, 'app/ecom/send_feedback.html', {'feedbackForm':feedbackForm, 'customer':customer ,'product_count_in_cart':product_count_in_cart})
 
 
 #---------------------------------------------------------------------------------
