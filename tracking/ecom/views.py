@@ -454,22 +454,20 @@ def add_to_cart_view(request,pk):
 
     response = render(request, 'app/ecom/index.html',{'cant_prod':cant_prod,  'products':products,'customer':customer ,'product_count_in_cart':product_count_in_cart})
 
-   
-
-
-    #adding product id to cookies
-    if 'product_ids' in request.COOKIES:
-        product_ids = request.COOKIES['product_ids']
-        if product_ids=="":
-            product_ids=str(pk)
+    if request.method == 'GET':
+        #adding product id to cookies
+        if 'product_ids' in request.COOKIES:
+            product_ids = request.COOKIES['product_ids']
+            if product_ids=="":
+                product_ids=str(pk)
+            else:
+                product_ids=product_ids+"|"+str(pk)
+            response.set_cookie('product_ids', product_ids)
         else:
-            product_ids=product_ids+"|"+str(pk)
-        response.set_cookie('product_ids', product_ids)
-    else:
-        response.set_cookie('product_ids', pk)
+            response.set_cookie('product_ids', pk)
 
-    product=models.Product.objects.get(id=pk)
-    messages.info(request, product.name + ' added to cart successfully!')
+        product=models.Product.objects.get(id=pk)
+        messages.info(request, product.name + ' added to cart successfully!')
 
 
     return response
@@ -1136,11 +1134,31 @@ def my_profile_view(request):
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def edit_profile_view(request):
-    customer=models.Customer.objects.get(user_id=request.user.id)
+    products=models.Product.objects.all()
+
+    #for cart counter, fetching products ids added by customer from cookies
+    if 'product_ids' in request.COOKIES:
+        product_ids = request.COOKIES['product_ids']
+        counter=product_ids.split('|')
+        product_count_in_cart=len(set(counter))
+    else:
+        product_count_in_cart=0
+    
+    cant_prod = models.Product.objects.count()
+    customer = None
+
+
+    try:
+        customer= models.Customer.objects.get(user_id=request.user.id)
+    except:
+        print("Error....")
+
+
+
     user=models.User.objects.get(id=customer.user_id)
     userForm=forms.CustomerUserForm(instance=user)
     customerForm=forms.CustomerForm(request.FILES,instance=customer)
-    mydict={'userForm':userForm,'customerForm':customerForm}
+    mydict={'userForm':userForm,'customerForm':customerForm,'cant_prod':cant_prod,  'products':products,'customer':customer ,'product_count_in_cart':product_count_in_cart, 'customer':customer }
     if request.method=='POST':
         userForm=forms.CustomerUserForm(request.POST,instance=user)
         customerForm=forms.CustomerForm(request.POST,instance=customer)
@@ -1158,7 +1176,28 @@ def edit_profile_view(request):
 #------------------------ ABOUT US AND CONTACT US VIEWS START --------------------
 #---------------------------------------------------------------------------------
 def aboutus_view(request):
-    return render(request,'app/ecom/aboutus.html')
+    products=models.Product.objects.all()
+
+    #for cart counter, fetching products ids added by customer from cookies
+    if 'product_ids' in request.COOKIES:
+        product_ids = request.COOKIES['product_ids']
+        counter=product_ids.split('|')
+        product_count_in_cart=len(set(counter))
+    else:
+        product_count_in_cart=0
+    
+    cant_prod = models.Product.objects.count()
+    events = models.Events.objects.all()
+    customer = None
+
+
+    try:
+        customer= models.Customer.objects.get(user_id=request.user.id)
+    except:
+        print("Error....")
+
+
+    return render(request,'app/ecom/aboutus.html',{'cant_prod':cant_prod,  'products':products,'customer':customer ,'product_count_in_cart':product_count_in_cart, 'customer':customer,'events':events})
 
 def contactus_view(request):
     sub = forms.ContactusForm()
