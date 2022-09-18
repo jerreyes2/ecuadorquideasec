@@ -170,7 +170,6 @@
           <div class="d-flex btn-reveal-trigger">
             <div class="calendar"><span class="calendar-month">{{event.date_start|date:"l" }}</span><span class="calendar-day">{{event.date_start|date:'d'}}</span></div>
             <div class="flex-1 position-relative ps-3">
-              <h6 class="fs-0 mb-0"><a href="../../app/events/event-detail.html">{{event.tittle}}</a></h6>
               <h6 class="fs-0 mb-0"><a href="{{event.url}}">{{event.tittle}} <span class="badge badge-soft-success rounded-pill">Free</span></a></h6>
               <p class="mb-1">Organized by <a href="#!" class="text-700">{{event.organized}}</a></p>
               <p class="text-1000 mb-0">Time: {{event.time_start}}</p>
