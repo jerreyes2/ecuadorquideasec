@@ -101,8 +101,8 @@ DATABASES = {
 }
 """
 
-DATABASES = coneccion.MYSQL_LOCAL
-#DATABASES = coneccion.MYSQL_REMOTO
+#DATABASES = coneccion.MYSQL_LOCAL
+DATABASES = coneccion.MYSQL_REMOTO
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
