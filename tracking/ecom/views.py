@@ -388,73 +388,14 @@ def tracking_search(request):
     
     
 
-
-    """
-    products=models.Product.objects.all()
-    if 'product_ids' in request.COOKIES:
-        product_ids = request.COOKIES['product_ids']
-        counter=product_ids.split('|')
-        product_count_in_cart=len(set(counter))
-    else:
-        product_count_in_cart=0
-    customer=models.Customer.objects.get(user_id=request.user.id)
-
-
-    num = request.GET.get('num_order')
-   
-    orders = models.Orders.objects.all().filter(num_order = num)
- 
-
-
-    if orders != None:
-        order_list = models.Orders_list.objects.all().filter(num_order_id = num )
-
-
-        ordered_products=[]
- 
-
-        for order in orders:
-                                          #order.product.id
-            prod = models.Product.objects.all().filter(id = order.product_id)
-            ordered_product= models.Product.objects.all().filter(id = order.product_id)
-            ordered_products.append(ordered_product)
-
-
-
-    
-
-
- 
-        return render(request,'app/ecom/tracking_search.html',{'data':zip(ordered_products,orders) ,'customer':customer,'orders':orders, 'order_list':order_list , 'prod':prod, 'products':products,'product_count_in_cart':product_count_in_cart,'customer':customer})
-    """
-
 # any one can add product to cart, no need of signin
 def add_to_cart_view(request,pk):
 
-    products=models.Product.objects.all()
-
-    #for cart counter, fetching products ids added by customer from cookies
-    if 'product_ids' in request.COOKIES:
-        product_ids = request.COOKIES['product_ids']
-        counter=product_ids.split('|')
-        product_count_in_cart=len(set(counter))
-    else:
-        product_count_in_cart=0
     
-    cant_prod = models.Product.objects.count()
-    customer = None
+    if request.method == 'POST':
 
+        response = redirect("/")
 
-    try:
-        customer= models.Customer.objects.get(user_id=request.user.id)
-    except:
-        print("Error....")
-
-
-
-    response = render(request, 'app/ecom/index.html',{'cant_prod':cant_prod,  'products':products,'customer':customer ,'product_count_in_cart':product_count_in_cart})
-
-    if request.method == 'GET':
         #adding product id to cookies
         if 'product_ids' in request.COOKIES:
             product_ids = request.COOKIES['product_ids']
@@ -466,13 +407,11 @@ def add_to_cart_view(request,pk):
         else:
             response.set_cookie('product_ids', pk)
 
-        product=models.Product.objects.get(id=pk)
+        product = models.Product.objects.get(id=pk)
         messages.info(request, product.name + ' added to cart successfully!')
 
 
     return response
-
-
 
 # for checkout of cart
 def cart_view(request):
@@ -641,10 +580,6 @@ def customer_home_view(request):
 
 
     return render(request,'app/ecom/customer_home.html',{'cant_prod':cant_prod,'products':products,'product_count_in_cart':product_count_in_cart,'customer':customer})
-
-
-
-
 
 
 # shipment address before placing order

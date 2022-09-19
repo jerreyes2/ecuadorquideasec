@@ -126,8 +126,14 @@
           <div class="d-flex flex-between-center px-3">
 
             <div>
-              <a class="btn btn-sm btn-falcon-default" href="{% url 'add-to-cart' p.id  %}" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
-              <span class="fas fa-cart-plus"></span></a></div>
+              <form action="{% url 'add-to-cart' p.id  %}" method="post">
+                {% csrf_token %}
+               
+                <button class="btn btn-sm btn-falcon-default" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart"> <span class="fas fa-cart-plus"></span></a></div></button>
+               
+
+              </form>
+              
           </div>
         </div>
       </div>
