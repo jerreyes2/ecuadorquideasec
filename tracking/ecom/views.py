@@ -260,7 +260,7 @@ def update_order_view(request,pk):
             ord_stat = order.status
             print("estado...."+str(ord_stat))
             if ord_stat =="Order Confirmed":
-                print("sssssssssssssssssssssssssssssi")
+                
                 pay = models.Pay.objects.get(num_order=pk)
                 pay.status = "Confirmed"
                 pay.save()
@@ -354,39 +354,40 @@ def tracking(request):
 
 def tracking_search(request):
     # whatever user write in search box we get in query
+    if request.user.is_authenticated:
+        if 'product_ids' in request.COOKIES:
+            product_ids = request.COOKIES['product_ids']
+            counter=product_ids.split('|')
+            product_count_in_cart=len(set(counter))
+        else:
+            product_count_in_cart=0
+
+        customer = None
+        user = None
+
+        try:
+            customer= models.Customer.objects.get(user_id=request.user.id)
+            user = models.User.objects.get(id = request.user.id)
+        
+        except:
+            print("Error....")
+
+        num_order_ = request.GET.get('num_order')
+        orders = models.Orden.objects.all().filter(num_order = num_order_)
+        orden_list = models.Orden_list.objects.all()
+        products = models.Product.objects.all()
+        detail_order = models.Detail_Orden.objects.all()
+        
+        
+        #ordered_products = models.Orden_list.objects.all().filter( num_order_id = ordenes)
+
+        #ordered_products=[]
+
     
-    if 'product_ids' in request.COOKIES:
-        product_ids = request.COOKIES['product_ids']
-        counter=product_ids.split('|')
-        product_count_in_cart=len(set(counter))
+        return render(request,'app/ecom/tracking_search.html',{'detail_orders':detail_order,'user':user, 'products': products,'orders' :orders, 'orders_list': orden_list,'product_count_in_cart':product_count_in_cart,'customer':customer})
     else:
-        product_count_in_cart=0
-
-    customer = None
-    user = None
-
-    try:
-        customer= models.Customer.objects.get(user_id=request.user.id)
-        user = models.User.objects.get(id = request.user.id)
-       
-    except:
-        print("Error....")
-
-    num_order_ = request.GET.get('num_order')
-    orders = models.Orden.objects.all().filter(num_order = num_order_)
-    orden_list = models.Orden_list.objects.all()
-    products = models.Product.objects.all()
-    detail_order = models.Detail_Orden.objects.all()
-    
-    
-    #ordered_products = models.Orden_list.objects.all().filter( num_order_id = ordenes)
-
-    #ordered_products=[]
-
- 
-    return render(request,'app/ecom/tracking_search.html',{'detail_orders':detail_order,'user':user, 'products': products,'orders' :orders, 'orders_list': orden_list,'product_count_in_cart':product_count_in_cart,'customer':customer})
-    
-    
+        return redirect('customerlogin')
+        
 
 # any one can add product to cart, no need of signin
 def add_to_cart_view(request,pk):
@@ -1027,16 +1028,47 @@ def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
     html  = template.render(context_dict)
     result = io.BytesIO()
-    pdf = pisa.pisaDocument(io.BytesIO(html.encode("ISO-8859-1")), result)
+    pdf = pisa.pisaDocument(io.BytesIO(html.encode("cp1252")), result)
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return
 
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
-def download_invoice_view(request,orderID,productID):
-    order=models.Orders.objects.get(id=orderID)
+def download_invoice_view(request,num_order):
+    
+    customer = None
+    user = None
+
+    try:
+        customer= models.Customer.objects.get(user_id=request.user.id)
+        user = models.User.objects.get(id = request.user.id)
+       
+    except:
+        print("Error....")
+
+  
+    orders = models.Orden.objects.all().filter(num_order = num_order)
+    orden_list = models.Orden_list.objects.all()
+    products = models.Product.objects.all()
+    detail_order = models.Detail_Orden.objects.all()
+
+ 
+    return render_to_pdf('app/ecom/download_invoice.html',{'detail_orders':detail_order,'user':user, 'products': products,'orders' :orders, 'orders_list': orden_list,'customer':customer})
+
+
+    
+    
+    """
+    order=models.Orden.objects.get(num_order=orderID)
     product=models.Product.objects.get(id=productID)
+
+    orders = models.Orden.objects.all().filter(num_order = orderID)
+    orden_list = models.Orden_list.objects.all()
+    products = models.Product.objects.all()
+    detail_order = models.Detail_Orden.objects.all()
+
+
     mydict={
         'orderDate':order.order_date,
         'customerName':request.user,
@@ -1051,7 +1083,7 @@ def download_invoice_view(request,orderID,productID):
         'productDescription':product.description,
     }
     return render_to_pdf('app/ecom/download_invoice.html',mydict)
-
+    """
 
 
 
