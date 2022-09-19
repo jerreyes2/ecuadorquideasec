@@ -506,6 +506,13 @@ def remove_from_cart_view(request,pk):
     else:
         product_count_in_cart=0
 
+    customer = None
+
+    try:
+        customer= models.Customer.objects.get(user_id=request.user.id)
+    except:
+        print("Error....")
+
     # removing product id from cookie
     total=0
     if 'product_ids' in request.COOKIES:
@@ -525,7 +532,7 @@ def remove_from_cart_view(request,pk):
                 value=value+product_id_in_cart[0]
             else:
                 value=value+"|"+product_id_in_cart[i]
-        response = render(request, 'app/ecom/cart.html',{'products':products,'total':total,'product_count_in_cart':product_count_in_cart})
+        response = render(request, 'app/ecom/cart.html',{'products':products,'total':total,'product_count_in_cart':product_count_in_cart, 'customer':customer})
         if value=="":
             response.delete_cookie('product_ids')
         response.set_cookie('product_ids',value)
