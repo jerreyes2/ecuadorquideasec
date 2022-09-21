@@ -252,7 +252,12 @@ def update_order_view(request,pk):
     order=models.Orden.objects.get(num_order=pk)
     orderForm=forms.OrderForm(instance=order)
     pay = models.Pay.objects.get(num_order=pk)
-    
+
+    orders = models.Orden.objects.all().filter(num_order = pk)
+    orden_list = models.Orden_list.objects.all()
+    products = models.Product.objects.all()
+    detail_order = models.Detail_Orden.objects.all()
+
     status = "Confirmed"
     if request.method=='POST':
         orderForm=forms.OrderForm(request.POST,instance=order)
@@ -266,7 +271,7 @@ def update_order_view(request,pk):
                 pay.save()
             orderForm.save()
             return redirect('admin-view-booking')
-    return render(request,'app/ecom/update_order.html',{'orderForm':orderForm,"pay":pay , "status":status})
+    return render(request,'app/ecom/update_order.html',{'orderForm':orderForm,"pay":pay , "status":status, 'detail_orders':detail_order, 'products': products,'orders' :orders, 'orders_list': orden_list})
 
 
 
@@ -793,17 +798,15 @@ def payment_success_view(request):
 
     models.Orden.objects.get_or_create( num_order = num_order_, status='Pending', email=email,address=address, mobile=mobile, iva = iva ,subtotal= subtotal, send=send, total=total, customer=customer)
 
-    orden = models.Orden.objects.get(num_order = num_order_)
+    #orden = models.Orden.objects.get(num_order = num_order_)
 
     for product, cant in zip (products , cantidad) :
        # models.Orders.objects.get_or_create(customer=customer, num_order = num_order_, product = product,status='Pending',email=email,mobile=mobile,address=address, cant= cant)
-        
-        models.Orden_list.objects.get_or_create( cant= cant, num_order = orden , product = product )
+        models.Orden_list.objects.get_or_create( cant = cant, num_order_id = num_order_ , product = product )
 
 
     #models.Orders_list.objects.get_or_create( subtotal= subtotal, send=send, total=total, num_order = num_order_ )
     models.Pay.objects.get_or_create( num_pay = num_pay_, num_order = num_order_, total_pay = total, status='Pending', type_pay = type_pay_ , deposit_imag = myfile, num_depos = num_depos)
-
     num_order_ = 0
 
   

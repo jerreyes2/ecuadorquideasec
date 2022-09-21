@@ -38,7 +38,10 @@ admin.site.register(Detail_Orden, DetailOrdenAdmin)
 
 
 class Orden_list_Admin(admin.ModelAdmin):
-    pass
+     list_display = ("num_order_id","product_id","cant")
+     list_filter = (
+        ('num_order_id'),
+    )
 admin.site.register(Orden_list, Orden_list_Admin)
 
 
